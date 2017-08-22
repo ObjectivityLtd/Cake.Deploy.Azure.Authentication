@@ -1,0 +1,4 @@
+## Cake.Deploy.Azure.Authentication
+
+
+
