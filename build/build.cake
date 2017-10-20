@@ -63,16 +63,11 @@ Task("NuGet")
 {
     var packagePath = outputDir;
 
-    if(!DirectoryExists(packagePath))
-    {
-        CreateDirectory(packagePath);
-    }
-
-    var nuspecFile = sourceDir + "\\Cake.Deploy.Azure.Authentication.nuspec";
+    var nuspecFile = sourceDir + "\\Cake.Deploy.Azure.Authentication.csproj";
 
     var nuGetPackSettings   = new NuGetPackSettings {
-        BasePath        = sourceDir + "\\bin\\Release\\",
-        OutputDirectory = packagePath
+        OutputDirectory = packagePath,
+        Properties = new Dictionary<string,string>{ {"Configuration", configuration} }
     };
 
     NuGetPack(nuspecFile, nuGetPackSettings);
