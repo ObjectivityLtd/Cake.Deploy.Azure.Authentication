@@ -59,23 +59,17 @@ Task("BuildSolution")
 
 Task("NuGet")
     .Description("Create nuget package")
+    .IsDependentOn("BuildSolution")
     .Does(()=>
 {
-    var packagePath = outputDir;
-
-    if(!DirectoryExists(packagePath))
-    {
-        CreateDirectory(packagePath);
-    }
-
-    var nuspecFile = sourceDir + "\\Cake.Deploy.Azure.Authentication.nuspec";
+    var projectFile = sourceDir + "\\Cake.Deploy.Azure.Authentication.csproj";
 
     var nuGetPackSettings   = new NuGetPackSettings {
-        BasePath        = sourceDir + "\\bin\\Release\\",
-        OutputDirectory = packagePath
+        OutputDirectory = outputDir,
+        Properties = new Dictionary<string,string>{ {"Configuration", configuration} }
     };
 
-    NuGetPack(nuspecFile, nuGetPackSettings);
+    NuGetPack(projectFile, nuGetPackSettings);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -84,7 +78,6 @@ Task("NuGet")
 
 Task("Default")
     .Description("This is the default task which will be ran if no specific target is passed in.")
-    .IsDependentOn("BuildSolution")
     .IsDependentOn("NuGet");
 
 ///////////////////////////////////////////////////////////////////////////////
